@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // URL de tu API viva
-const API_BASE_URL = 'https://tallerapi-production.up.railway.app';
+const API_BASE_URL = process.env.REACT_APP_API_URL; //'https://tallerapi-production.up.railway.app';
 
 const api = axios.create({
     baseURL: API_BASE_URL,
@@ -25,6 +25,10 @@ export const updateCliente = (id, data) => {
 
 export const desactivarCliente = (id) => {
     return api.patch(`/clientes/${id}/desactivar`);
+};
+
+export const activarCliente = (id) => {
+    return api.patch(`/clientes/${id}/activar`);
 };
 
 // SERVICIOS

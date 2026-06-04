@@ -110,3 +110,22 @@ tr.inactivo {
     padding: 5px 10px;
     border-radius: 4px;
 }
+
+.btn-reactivar {
+    background: #17a2b8;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.btn-reactivar:hover {
+    background: #138496;
+}
+
+.text-muted {
+    color: #999;
+}

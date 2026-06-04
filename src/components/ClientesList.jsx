@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getClientes, createCliente, desactivarCliente } from '../services/api';
+import { getClientes, createCliente, desactivarCliente, activarCliente } from '../services/api';
 import './ClientesList.css';
 
 function ClientesList() {
@@ -61,6 +61,18 @@ function ClientesList() {
         }
     };
 
+    const handleActivar = async (id) => {
+        if (window.confirm('¿Activar este cliente?.')) {
+        try {
+            await activarCliente(id);
+            cargarClientes();
+            alert('Cliente activado');
+        } catch (err) {
+            alert('Error al activar');
+        }
+        }
+    };
+
     if (loading) return <div className="container"><p>Cargando...</p></div>;
 
     return (
@@ -118,23 +130,28 @@ function ClientesList() {
                         <td>{cliente.email}</td>
                         <td>{cliente.telefono}</td>
                         <td>
-                        {cliente.activo ? (
-                            <span className="badge-activo">Activo</span>
-                        ) : (
-                            <span className="badge-inactivo">Inactivo</span>
-                        )}
+                            {cliente.activo ? (
+                                <span className="badge-activo">Activo</span>
+                            ) : (
+                                <span className="badge-inactivo">Inactivo</span>
+                            )}
                         </td>
                         <td>
-                        {cliente.activo ? (
-                            <button
-                            className="btn-desactivar"
-                            onClick={() => handleDesactivar(cliente.id)}
-                            >
-                            Desactivar
-                            </button>
-                        ) : (
-                            <span className="text-muted">—</span>
-                        )}
+                            {cliente.activo ? (
+                                <button
+                                className="btn-desactivar"
+                                onClick={() => handleDesactivar(cliente.id)}
+                                >
+                                Desactivar
+                                </button>
+                            ) : (
+                                <button
+                                className="btn-reactivar"
+                                onClick={() => handleActivar(cliente.id)}
+                                >
+                                Reactivar
+                                </button>
+                            )}
                         </td>
                     </tr>
                     ))}
