@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getClientes, createCliente, deleteCliente } from '../services/api';
+import { getClientes, createCliente, desactivarCliente } from '../services/api';
 import './ClientesList.css';
 
 function ClientesList() {
@@ -49,11 +49,12 @@ function ClientesList() {
         }
     };
 
-    const handleDelete = async (id) => {
-        if (window.confirm('¿Eliminar este cliente?')) {
+    const handleDesactivar = async (id) => {
+        if (window.confirm('Desactivar este cliente? Sus servicios se mantienen.')) {
         try {
-            await deleteCliente(id);
+            await desactivarCliente(id);
             cargarClientes();
+            alert('Cliente desactivado');
         } catch (err) {
             alert('Error al eliminar');
         }
@@ -100,31 +101,43 @@ function ClientesList() {
             ) : (
             <table>
                 <thead>
-                <tr>
+                    <tr>
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Email</th>
                     <th>Teléfono</th>
+                    <th>Estado</th>
                     <th>Acciones</th>
-                </tr>
+                    </tr>
                 </thead>
                 <tbody>
-                {clientes.map((cliente) => (
-                    <tr key={cliente.id}>
-                    <td>{cliente.id}</td>
-                    <td>{cliente.nombre}</td>
-                    <td>{cliente.email}</td>
-                    <td>{cliente.telefono}</td>
-                    <td>
-                        <button
-                        className="btn-delete"
-                        onClick={() => handleDelete(cliente.id)}
-                        >
-                        Eliminar
-                        </button>
-                    </td>
+                    {clientes.map((cliente) => (
+                    <tr key={cliente.id} className={!cliente.activo ? 'inactivo' : ''}>
+                        <td>{cliente.id}</td>
+                        <td>{cliente.nombre}</td>
+                        <td>{cliente.email}</td>
+                        <td>{cliente.telefono}</td>
+                        <td>
+                        {cliente.activo ? (
+                            <span className="badge-activo">Activo</span>
+                        ) : (
+                            <span className="badge-inactivo">Inactivo</span>
+                        )}
+                        </td>
+                        <td>
+                        {cliente.activo ? (
+                            <button
+                            className="btn-desactivar"
+                            onClick={() => handleDesactivar(cliente.id)}
+                            >
+                            Desactivar
+                            </button>
+                        ) : (
+                            <span className="text-muted">—</span>
+                        )}
+                        </td>
                     </tr>
-                ))}
+                    ))}
                 </tbody>
             </table>
             )}

@@ -91,3 +91,22 @@ table tbody tr:hover {
 .btn-delete:hover {
     background: #c82333;
 }
+
+tr.inactivo {
+    opacity: 0.6;
+    background: #f0f0f0;
+}
+
+.badge-activo {
+    background: #28a745;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.badge-inactivo {
+    background: #dc3545;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+}

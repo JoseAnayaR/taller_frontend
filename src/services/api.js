@@ -23,8 +23,8 @@ export const updateCliente = (id, data) => {
     return api.put(`/clientes/${id}`, data);
 };
 
-export const deleteCliente = (id) => {
-    return api.delete(`/clientes/${id}`);
+export const desactivarCliente = (id) => {
+    return api.patch(`/clientes/${id}/desactivar`);
 };
 
 // SERVICIOS

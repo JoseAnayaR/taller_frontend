@@ -92,7 +92,8 @@ function ServiciosList() {
             required
             >
             <option value="">Selecciona cliente</option>
-            {clientes.map((c) => (
+            {clientes.filter(c => c.activo === true)
+            .map((c) => (
                 <option key={c.id} value={c.id}>
                 {c.nombre}
                 </option>
