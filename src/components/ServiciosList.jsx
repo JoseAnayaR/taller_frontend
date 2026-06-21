@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getServicios, getClientes, createServicio, marcarFacturado } from '../services/api';
+import { getServicios, getClientes, createServicio, marcarFacturado, sinFacturar } from '../services/api';
 import './ServiciosList.css';
 
 function ServiciosList() {
@@ -40,14 +40,14 @@ function ServiciosList() {
         }
 
         try {
-        await createServicio({
-            descripcion: form.descripcion,
-            costo: parseFloat(form.costo),
-            cliente_id: parseInt(form.cliente_id),
-        });
-        setForm({ descripcion: '', costo: '', cliente_id: '' });
-        cargarDatos();
-        alert('Servicio creado');
+            await createServicio({
+                descripcion: form.descripcion,
+                costo: parseFloat(form.costo),
+                cliente_id: parseInt(form.cliente_id),
+            });
+            setForm({ descripcion: '', costo: '', cliente_id: '' });
+            cargarDatos();
+            alert('Servicio creado');
         } catch (err) {
         alert('Error: ' + err.message);
         }
@@ -62,6 +62,26 @@ function ServiciosList() {
         alert('Error: ' + err.message);
         }
     };
+
+    const handlesinFacturar = async (id) => {
+    try {
+        // Asegúrate de usar la ruta exacta con guion medio que corregimos en el backend
+        const response = await fetch(`http://localhost:8000/servicios/${id}/sin-facturar`, {
+            method: 'PATCH',
+        });
+        if (response.ok) {
+            const servicioActualizado = await response.json();
+            
+            alert('Servicio marcado como no facturado');
+            // ¡ESTA LÍNEA ES LA CLAVE! Reemplaza el servicio viejo por el actualizado (facturado: false)
+            setServicios(serviciosAnteriores => 
+                serviciosAnteriores.map(s => s.id === id ? servicioActualizado : s)
+            );
+        }
+    } catch (error) {
+        console.error("Error al quitar facturación:", error);
+    }
+};
 
     if (loading) return <div className="container"><p>Cargando...</p></div>;
 
@@ -133,6 +153,14 @@ function ServiciosList() {
                             onClick={() => handleFacturar(servicio.id)}
                             >
                             Facturar
+                            </button>
+                        )}
+                        {servicio.facturado && (
+                            <button
+                            className="btn-facturar"
+                            onClick={() => handlesinFacturar(servicio.id)}
+                            >
+                            No facturado
                             </button>
                         )}
                         </td>

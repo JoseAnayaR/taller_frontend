@@ -44,6 +44,10 @@ export const marcarFacturado = (id) => {
     return api.patch(`/servicios/${id}/facturar`);
 };
 
+export const sinFacturar = (id) => {
+    return api.patch(`/servicios/${id}/sin-facturar`);
+};
+
 // REPORTES
 export const descargarReporte = (tipo) => {
     return api.get(`/reportes/${tipo}`, {
