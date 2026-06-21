@@ -64,24 +64,14 @@ function ServiciosList() {
     };
 
     const handlesinFacturar = async (id) => {
-    try {
-        // Asegúrate de usar la ruta exacta con guion medio que corregimos en el backend
-        const response = await fetch(`http://localhost:8000/servicios/${id}/sin-facturar`, {
-            method: 'PATCH',
-        });
-        if (response.ok) {
-            const servicioActualizado = await response.json();
-            
-            alert('Servicio marcado como no facturado');
-            // ¡ESTA LÍNEA ES LA CLAVE! Reemplaza el servicio viejo por el actualizado (facturado: false)
-            setServicios(serviciosAnteriores => 
-                serviciosAnteriores.map(s => s.id === id ? servicioActualizado : s)
-            );
+        try {
+        await sinFacturar(id);
+        cargarDatos();
+        alert('Servicio marcado como no facturado');
+        } catch (err) {
+        alert('Error: ' + err.message);
         }
-    } catch (error) {
-        console.error("Error al quitar facturación:", error);
-    }
-};
+    };
 
     if (loading) return <div className="container"><p>Cargando...</p></div>;
 
